@@ -1,10 +1,11 @@
 {
   "name": "kanca-client",
   "type": "module",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "eckoln",
   "license": "MIT",
   "bin": {
+    "kanca": "dist/client.js",
     "kanca-client": "dist/client.js"
   },
   "main": "./dist/client.js",
