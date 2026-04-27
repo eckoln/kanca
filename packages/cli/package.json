@@ -1,0 +1,34 @@
+{
+  "name": "kanca-client",
+  "type": "module",
+  "version": "0.0.5",
+  "author": "eckoln",
+  "license": "MIT",
+  "bin": {
+    "kanca-client": "dist/client.js"
+  },
+  "main": "./dist/client.js",
+  "types": "./dist/client.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup --clean",
+    "format": "bunx biome format --write ./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "browser": false,
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
+  }
+}
