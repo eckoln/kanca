@@ -58,14 +58,16 @@ export class Client {
 
     try {
       const data = JSON.parse(text)
-      const payload = JSON.stringify(data.payload)
+      const { headers: eventHeaders, body } = data
 
-      console.log(`➔ Message received (${payload.length} bytes).`)
+      console.log(`➔ Message received (${body.length} bytes).`)
+
+      const { 'content-length': _cl, 'host': _h, 'connection': _c, 'transfer-encoding': _te, ...forwardHeaders } = eventHeaders || {}
 
       const response = await fetch(`${this.targetUrl}${this.path}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: payload,
+        headers: forwardHeaders,
+        body,
       })
 
       if (response.ok) {

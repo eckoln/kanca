@@ -7,7 +7,8 @@ import { z } from 'zod'
 export const eventsSchema = z.object({
   id: z.uuid(),
   timestamp: z.number(),
-  payload: z.json(),
+  headers: z.record(z.string(), z.string()),
+  body: z.string(),
   channelId: z.string(),
 })
 

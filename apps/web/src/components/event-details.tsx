@@ -43,7 +43,7 @@ export function EventDetails({
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => copy(JSON.stringify(selected.payload))}
+                  onClick={() => copy(selected.body)}
                 >
                   {isCopied ? (
                     <CheckIcon className="text-green-400" />
@@ -59,7 +59,13 @@ export function EventDetails({
             <Card className="overflow-auto max-h-200">
               <CardContent>
                 <pre className="font-mono whitespace-pre-wrap">
-                  {JSON.stringify(selected.payload, null, 2)}
+                  {(() => {
+                    try {
+                      return JSON.stringify(JSON.parse(selected.body), null, 2)
+                    } catch {
+                      return selected.body
+                    }
+                  })()}
                 </pre>
               </CardContent>
             </Card>

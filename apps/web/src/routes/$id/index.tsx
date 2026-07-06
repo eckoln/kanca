@@ -7,9 +7,9 @@ import { EventDetails } from '#/components/event-details'
 import { Sidebar } from '#/components/sidebar'
 import { type Event, eventsCollection } from '#/lib/collections/events'
 
-async function sendEvent(id: string, payload: Event) {
+async function sendEvent(id: string, event: Event) {
   const stub = env.DISPATCHER.get(env.DISPATCHER.idFromName('default'))
-  return stub.broadcast(id, payload)
+  return stub.broadcast(id, event)
 }
 
 export const sendEventFn = createServerFn({ method: 'POST' })
@@ -20,7 +20,8 @@ export const sendEventFn = createServerFn({ method: 'POST' })
         id: z.string(),
         channelId: z.string(),
         timestamp: z.number(),
-        payload: z.any(),
+        headers: z.record(z.string(), z.string()),
+        body: z.string(),
       }),
     }),
   )
@@ -47,13 +48,15 @@ export const Route = createFileRoute('/$id/')({
         return next()
       },
       POST: async ({ request, params }) => {
-        const payload = await request.json<Event['payload']>()
+        const body = await request.text()
+        const headers = Object.fromEntries(request.headers)
 
         await sendEvent(params.id, {
           id: crypto.randomUUID(),
           channelId: params.id,
           timestamp: Date.now(),
-          payload,
+          headers,
+          body,
         })
 
         return new Response(null, { status: 201 })
