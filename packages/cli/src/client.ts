@@ -12,8 +12,8 @@ export class Client {
     targetUrl?: string,
   ) {
     this.url = url
-    this.path = path.startsWith('/') ? path : `/${path}`
     this.targetUrl = targetUrl || `http://127.0.0.1:${port}`
+    this.path = targetUrl ? '' : (path.startsWith('/') ? path : `/${path}`)
   }
 
   public connect(): void {
